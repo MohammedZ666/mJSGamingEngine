@@ -7,6 +7,10 @@ class GameConfig {
     this.gameSpeed = gameSpeed;
     this.gameFrame = gameFrame;
   }
+
+  update() {
+    this.gameFrame = this.gameFrame + this.gameSpeed;
+  }
 }
 
 export default GameConfig;
