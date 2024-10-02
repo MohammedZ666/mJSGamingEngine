@@ -4,14 +4,18 @@ class Sprite {
     y,
     scale,
     imageSrc,
-    spritesInImage,
+    spritesPerRow,
+    maxSpritesPerRow,
+    maxRows,
     spriteRow,
     animationSpeed,
   }) {
     this.image = new Image();
     this.image.src = imageSrc;
     this.spriteRow = spriteRow;
-    this.spritesInImage = spritesInImage;
+    this.spritesPerRow = spritesPerRow;
+    this.maxRows = maxRows;
+    this.maxSpritesPerRow = maxSpritesPerRow;
     this.scale = scale;
     this.spriteState = 0;
     this.speed = Math.random() * 4 - 2;
@@ -26,8 +30,8 @@ class Sprite {
     this.context = this.gameConfig.context;
     this.canvasWidth = this.gameConfig.canvasWidth;
     this.canvasHeight = this.gameConfig.canvasHeight;
-    this.spriteWidth = Math.floor(this.image.width / this.spritesInImage);
-    this.spriteHeight = this.image.height;
+    this.spriteWidth = Math.floor(this.image.width / this.maxSpritesPerRow);
+    this.spriteHeight = Math.floor(this.image.height / this.maxRows);
     this.width = Math.round(this.spriteWidth * this.scale);
     this.height = Math.round(this.spriteHeight * this.scale);
     this.isInitCalled = true;
@@ -83,7 +87,7 @@ class Sprite {
       this.height
     );
     if (this.gameConfig.gameFrame % this.animationSpeed == 0) {
-      this.spriteState = (this.spriteState + 1) % this.spritesInImage;
+      this.spriteState = (this.spriteState + 1) % this.spritesPerRow;
     }
   }
 }

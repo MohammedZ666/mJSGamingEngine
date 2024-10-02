@@ -8,8 +8,10 @@ import SpriteArray from "./SpriteArray.js";
 
 const gameConfig = new GameConfig({
   canvasId: "canvas1",
-  gameFrame: 0,
+  startFrame: 0,
+  maxFrame: 15000,
   gameSpeed: 4,
+  debug: true,
 });
 
 let layers = [
@@ -40,16 +42,68 @@ let enemies = [];
 
 for (let i = 0; i < 5; i++) {
   let enemy = new Sprite({
-    x: 250,
-    y: 300,
+    x: Math.round(Math.random() * gameConfig.canvasWidth),
+    y: Math.round(Math.random() * gameConfig.canvasHeight),
     scale: 0.5,
     imageSrc: "spriteSheets/enemy1.png",
-    spritesInImage: 6,
+    spritesPerRow: 6,
+    maxSpritesPerRow: 6,
+    maxRows: 1,
     spriteRow: 0,
     animationSpeed: 5,
   });
   enemies.push(enemy);
 }
 enemies = new SpriteArray({ sprites: enemies, gameConfig: gameConfig });
-let gameLoop = new GameLoop(gameConfig);
-gameLoop.render(enemies, bg);
+
+let enemies2 = [];
+for (let i = 0; i < 1; i++) {
+  let enemy = new Sprite({
+    x: 200,
+    y: 200,
+    scale: 0.5,
+    imageSrc: "spriteSheets/shadow_dog.png",
+    spritesPerRow: 7,
+    maxSpritesPerRow: 12,
+    spriteRow: 0,
+    maxRows: 10,
+    animationSpeed: 5,
+  });
+  enemies2.push(enemy);
+}
+enemies2 = new SpriteArray({ sprites: enemies2, gameConfig: gameConfig });
+
+let gameLoop = new GameLoop({
+  gameConfig: gameConfig,
+  sprites: enemies,
+  backgrounds: bg,
+});
+function levelOne() {
+  if (gameConfig.gameFrame < 6000) {
+    gameLoop.drawText({
+      text: "Inside First Sublevel",
+      posX: 200,
+      posY: 600,
+      fontSize: 15,
+      strokeWidth: 0.5,
+    });
+  } else if (gameConfig.gameFrame < 10000) {
+    gameLoop.drawText({
+      text: "Inside Second Sublevel",
+      posX: 200,
+      posY: 600,
+      fontSize: 15,
+      strokeWidth: 0.5,
+    });
+    gameLoop.setSprites(enemies2);
+  } else {
+    gameLoop.drawText({
+      text: "End Level",
+      posX: 200,
+      posY: 600,
+      fontSize: 15,
+      strokeWidth: 0.5,
+    });
+  }
+}
+gameLoop.render(levelOne);

@@ -17,11 +17,12 @@ class LayerParallaxLeftToRight {
   update() {
     if (!this.isInitCalled)
       throw Error("Please call the init() method before calling update().");
-
-    this.x =
-      -this.x >= this.image.width - this.speed
-        ? this.image.width + (this.x - this.speed)
-        : this.x - this.speed;
+    if (this.gameConfig.maxFrame > this.gameConfig.gameFrame) {
+      this.x =
+        -this.x >= this.image.width - this.speed
+          ? this.image.width + (this.x - this.speed)
+          : this.x - this.speed;
+    }
   }
 
   draw() {
